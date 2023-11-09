@@ -19,8 +19,8 @@ app = Flask(__name__)
 # Create a new client and connect to the server
 uri = config.DB_URI
 client = MongoClient(uri, server_api=ServerApi('1'))
-db = client["todo-app"]
-collection = db["tasks"]
+db = client[config.DB_NAME]
+collection = db[config.COLLECTION_NAME]
 
 @app.route('/task/<task_id>', methods=['GET'])
 def get_task(task_id):
