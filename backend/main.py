@@ -11,8 +11,6 @@ from pymongo.server_api import ServerApi
 from flask_cors import CORS, cross_origin
 import json
 
-print("test")
-
 # corss will allow react to communicate with it
 app = Flask(__name__)
 cors = CORS(app)
@@ -42,6 +40,8 @@ def add_user():
         return jsonify({"message": "Document inserted", "data": str(data)})
     else:
         return jsonify({"message": "Document failed to insert"})
+    
+
         
 
 

@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import './Register.css'; // Import the CSS file for styling
 
 const Register = () => {
   const [username, setUsername] = useState('');
@@ -37,7 +39,6 @@ const Register = () => {
     if (username.length < 8) { alert('Username must be at least 8 characters in length'); return; }
 
     var testRegex = new RegExp("^([a-z0-9]{5,})$");
-    
     if (!testRegex.test(username)) { alert('Username can only be letters and numbers'); return; }
   
     
@@ -73,43 +74,46 @@ const Register = () => {
   };
 
   return (
-    <div>
-      <p>This is the register page</p>
-      <form onSubmit={handleSubmit}>
-      <label>Username</label><br />
-        <input
-          type="text"
-          id="username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-        /><br />
+    <div className="register-container">
+      <div className="register-box">
+        <h1>Register</h1>
+        <form onSubmit={handleSubmit}>
+          <label>Username</label>
+          <input
+            type="text"
+            id="username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
 
-        <label>Email</label><br />
-        <input
-          type="text"
-          id="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        /><br />
+          <label>Email</label>
+          <input
+            type="text"
+            id="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
 
-        <label>Password</label><br />
-        <input
-          type="password"
-          id="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        /><br />
+          <label>Password</label>
+          <input
+            type="password"
+            id="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
 
-        <label>Confirm Password</label><br />
-        <input
-          type="password"
-          id="password-again"
-          value={passwordAgain}
-          onChange={(e) => setPasswordAgain(e.target.value)}
-        /><br />
+          <label>Confirm Password</label>
+          <input
+            type="password"
+            id="password-again"
+            value={passwordAgain}
+            onChange={(e) => setPasswordAgain(e.target.value)}
+          />
 
-        <input type="submit" />
+            <button type="submit" className="submit-button">Register</button>
       </form>
+        <p>Already have an account? <Link to="/login">Log in</Link></p>
+      </div>
     </div>
   );
 };
