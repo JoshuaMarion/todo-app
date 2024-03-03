@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import './Register.css'; // Import the CSS file for styling
+import './Register.css';
 
 const Register = () => {
   const [username, setUsername] = useState('');
@@ -9,8 +9,15 @@ const Register = () => {
   const [passwordAgain, setPasswordAgain] = useState('');
   const uuid = require('uuid');
   const generateUserId = () => { return uuid.v4(); };
+  const [badCredsVisible, setBadCredsVisible] = useState(false);
+  const [badEmailVisible, setBadEmailVisible] = useState(false);
+  const [badUsernameVisible, setBadUsernameVisible] = useState(false);
+
 
   async function handleSubmit(e) {
+    setBadCredsVisible(false);
+    setBadUsernameVisible(false);
+    setBadEmailVisible(false);
     e.preventDefault();
 
     // Username
@@ -28,7 +35,7 @@ const Register = () => {
     //check passwords first, then email, then username
     if (password !== passwordAgain) { alert('Passwords do not match'); return; }
     if (password.length > 20) { alert('Password cannot exceed 20 characters in length'); return; }
-    if (password.length < 8) { alert('Password must be at least 8 cracters in length'); return; }
+    if (password.length < 1) { alert('Password must be at least 8 cracters in length'); return; }
     
     // email
     if (!email.includes('@') || !email.includes('.com')) { alert('Please enter a valid email address'); return; }
@@ -36,19 +43,27 @@ const Register = () => {
     // username
     if (username.length > 20) { alert('Username cannot exceed 20 characters in length'); return; }
 
-    if (username.length < 8) { alert('Username must be at least 8 characters in length'); return; }
+    if (username.length < 1) { alert('Username must be at least 8 characters in length'); return; }
 
-    var testRegex = new RegExp("^([a-z0-9]{5,})$");
+    var testRegex = new RegExp("^([a-zA-Z0-9]{5,})$");
     if (!testRegex.test(username)) { alert('Username can only be letters and numbers'); return; }
   
     
+
+    // Generate user Id, hash+salt password, then store in DB
+    //todo: need to make sure can't store same email/username
+    // watch video on promises
+    // then implement in here
     const userUUID = generateUserId();
-    // If validations pass, send a POST API call
-    try {
-        const response = await fetch('http://localhost:5000/users/user', {
+
+      
+        const response = await fetch('http://localhost:5000/users/register', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
+            //"Access-Control-Allow-Headers" : "Content-Type",
+            //"Access-Control-Allow-Origin": "*",
+            //"Access-Control-Allow-Methods": "OPTIONS,POST,GET"
           },
           body: JSON.stringify({
             username: username,
@@ -57,26 +72,38 @@ const Register = () => {
             password: password,
           }),
         });
-  
-        if (response.ok) {
-          console.log('Registration successful!');
+
+        const responseBody = await response.json();
+        const errorMessage = responseBody.message;
+        if (response.status === 409 && errorMessage === "Email already in use") {
+          console.error('Email is already in use. Try logging in');
+          setBadEmailVisible(true);
+          console.log(response)
+          // You might want to redirect or perform other actions upon successful registration
+        } else if (response.status === 409 && errorMessage === "Username already taken") {
+          console.error('That username is already taken. Try a different one');
+          setBadUsernameVisible(true);
+          console.log(response)
+          // You might want to redirect or perform other actions upon successful registration
+        } else if (response.status === 400) {
+          console.error('Registration failed. Please try again');
           // You might want to redirect or perform other actions upon successful registration
         } else {
-          console.error('Registration failed');
+          console.log('Registration successful!');
           // Handle the error, display an error message, or perform other actions
         }
-      } catch (error) {
-        console.error('Error occurred during registration:', error.message);
-      }
+      
 
-    // All validations passed client side, time to send to interact with backend
-    console.log('Form submitted successfully');
   };
 
   return (
     <div className="register-container">
       <div className="register-box">
-        <h1>Register</h1>
+        <h1>Register for EasyGo!</h1>
+        <h2>Create your free account below</h2>
+        {badCredsVisible && <p id='badcreds' >Invalid Credentials</p>}
+        {badEmailVisible && <p id='bademail' >The email is already in use. Try logging in</p>}
+        {badUsernameVisible && <p id='badusername' >This username is already taken. Try another one</p>}
         <form onSubmit={handleSubmit}>
           <label>Username</label>
           <input

@@ -1,0 +1,15 @@
+.login-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background: linear-gradient(to right, #4CAF50, #2E8B57); /* Gradient background */
+}
+
+.login-box {
+    padding: 40px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 20 20 20px rgba(255, 0, 0, 0.1);
+    text-align: center;
+}

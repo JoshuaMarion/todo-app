@@ -1,0 +1,28 @@
+.task-container {
+    margin: 5px;
+    border-color: lightgreen;
+    border-radius: 45px;
+    border-width: 2px;
+    border-style: solid;
+  }
+
+
+.checkbox-round {
+    width: 4px;
+    height: 4px;
+    background-color: white;
+    border-radius: 50%;
+    vertical-align: middle;
+    border: 1.5px solid #ddd;
+    appearance: none;
+    -webkit-appearance: none;
+    outline: none;
+    cursor: pointer;
+    margin-top: 12px;
+    margin-bottom: 12px;
+    margin-left: 10px;
+}
+
+.checkbox-round:checked {
+    background-color: #0063ff;
+}

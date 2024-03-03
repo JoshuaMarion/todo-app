@@ -1,0 +1,10 @@
+.button-div {
+    display: flex;
+    justify-content: center; /* This centers the child element horizontally */
+    margin-top: 10px;
+    margin-bottom: 10px;    
+}
+
+.add-task-button {
+    background-color: green;
+}
